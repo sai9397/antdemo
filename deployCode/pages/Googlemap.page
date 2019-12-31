@@ -1,0 +1,119 @@
+<apex:page standardController="Tour_Packages__c" extensions="PlaceController"  >
+    <!--  lightningStylesheets="true" -->
+    <apex:form id="myForm">         
+             <apex:pageBlock >
+                     <apex:outputLabel Styleclass="Search"><b>Search for country :</b></apex:outputLabel>
+                   <apex:inputtext value="{!country}"  id="seachid" Styleclass="city"/> 
+                 <apex:commandButton value="search" action="{!contactpage}" styleClass="b1"/>                     
+                 <apex:pageBlock rendered="{!if(boolvalue=false,true,false)}">                       
+                     <apex:pageblockTable value="{!placedetails}" var="place">
+                         <apex:column headervalue="Country" >                 
+                             <apex:outputText value="{! place.country__c }"/>   
+                         </apex:column>
+                         <apex:column headerValue="City" >  
+                             <apex:outputText value="{! place.city__c }"/>        
+                         </apex:column>
+                         <apex:column headerValue="Place">               
+                             <apex:outputText value="{! place.name }"/>        
+                         </apex:column>
+                         <apex:column headerValue="rating" >
+                             <apex:outputText value="{! place.rating__c }"/>        
+                         </apex:column>           
+                     </apex:pageblockTable> 
+                  <apex:pageBlockButtons >
+                    <!--  <apex:panelGrid columns="2">
+                         <apex:commandLink action="{!previous}">Previous</apex:commandLink>
+                         <apex:commandLink action="{!next}">Next</apex:commandLink>
+                     </apex:panelGrid>  -->
+                         
+                         <apex:commandButton value="first"  action="{!firstmethod}"   disabled="{!prev}" styleClass="b2"/>
+                         <apex:commandButton value="previous"  action="{!previousmethod}" disabled="{!prev}" styleClass="b2"/>
+                         <apex:commandButton value="next"  action="{!nextmethod}"    disabled="{!next}" styleClass="b2"/>  
+                         <apex:commandButton value="Last"  action="{!lastmethod}" disabled="{!next}" styleClass="b2"/> 
+                                    
+                     </apex:pageBlockButtons>
+                     
+                 </apex:pageBlock>  
+                 <apex:pageBlock rendered="{!if(boolvalue=true,true,false)}" >    
+                     
+                     <apex:pageblockTable value="{!placeController}" var="place">
+                         <apex:column headervalue="Country" >                     
+                             <apex:outputText value="{! place.country__c }"/>        
+                         </apex:column>
+                         <apex:column headerValue="City" >  
+                             <apex:outputText value="{! place.city__c }"/>        
+                         </apex:column>
+                         <apex:column headerValue="Place">               <apex:outputText value="{! place.name }"/>        
+                         </apex:column>
+                         <apex:column headerValue="rating" >   <apex:outputText value="{! place.rating__c }"/>        
+                         </apex:column>
+                     </apex:pageblockTable> 
+                     
+                   <apex:pageBlockButtons >
+             <!--    <apex:panelGrid columns="2">
+                         <apex:commandLink action="{!previous}">Previous</apex:commandLink>
+                         <apex:commandLink action="{!next}">Next</apex:commandLink>
+                     </apex:panelGrid> -->
+                         <apex:commandButton value="first"  action="{!firstmethod}"   disabled="{!prev}" styleClass="b2"/>
+                         <apex:commandButton value="previous"  action="{!previousmethod}" disabled="{!prev}" styleClass="b2"/>
+                         <apex:commandButton value="next"  action="{!nextmethod}"    disabled="{!next}" styleClass="b2"/>  
+                         <apex:commandButton value="Last"  action="{!lastmethod}" disabled="{!next}" styleClass="b2"/>  
+                   </apex:pageBlockButtons>                                             
+                 </apex:pageBlock>
+        </apex:pageBlock>
+   <apex:pageblock >	<apex:outputLabel styleClass="tp">Tour Packages</apex:outputLabel>
+            <apex:pageBlockTable value="{!tour}" var="tourlist" >
+                <apex:column value="{!tourlist.name}"/>
+                <apex:column value="{!tourlist.Tour_Package_Detail__c}"/>
+                <apex:column value="{!tourlist.Cost_per_day__c}"/>
+                 <apex:column headerValue="Book" >
+                     <apex:commandLink value="Book Now" action="{!BookPackage}" styleClass="bb"  >
+                     <apex:param assignTo="{!tour2.name}" value="{!tourlist.name}" name="bye"/>
+                     </apex:commandLink>                        
+                </apex:column>
+                  
+            </apex:pageBlockTable>
+        </apex:pageblock>         
+        
+        <apex:outputPanel rendered="{!if(afterSearch=true,true,false)}" >
+            <c:googlemapcomp country="{! country}"/>  
+        </apex:outputPanel>     
+    </apex:form> 
+   <style> 
+    .city {
+    margin-left:10px;
+       margin-bottom:30px;
+       margin-top:20px;
+    }
+       .Search {
+       font-size:15px;
+    margin-left:500px;
+       color:blue !important;
+       margin-bottom:30px;
+       margin-top:20px;
+    }
+       
+       .b1 {
+
+     
+      font-size: 100% !important;
+        border-radius: 4px !important;
+     font-weight:300 !important;
+    }
+       .b2 {
+    background-color: blue !important;        
+     
+      font-size: 100% !important;
+        border-radius: 4px !important; 
+    
+       
+    }
+       .bb{
+       color:red !important;
+       }
+       .tp{
+        margin-left:500px !important;
+       font-size:25px !important;
+       }
+    </style>
+</apex:page>

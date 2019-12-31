@@ -1,0 +1,21 @@
+<apex:component access="global" >
+    
+    <apex:includeLightning />    
+    <apex:attribute name="country" description="This is the value for the component"     type="String"   />
+    <div  id="GoogleMapDisplayLocation" />
+   
+    <!-- component.set("v.accId" , '{!$CurrentPage.parameters.recId}'); -->
+    <script>
+    
+    $Lightning.use("c:TestMap", function() {
+        $Lightning.createComponent("c:lightningMap",
+                                   { "country": "{!country}" },     
+                                   "GoogleMapDisplayLocation",
+                                   function(cmp) {
+                                    
+                                    console.log('Component created, do something cool here');
+                                    	console.log(cmp);
+                                   });
+    });
+    </script>
+</apex:component>

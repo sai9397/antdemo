@@ -1,0 +1,29 @@
+<apex:page showHeader="false" standardController="Booking__c" extensions="Booking"  standardStylesheets="false" renderAs="PDF">
+    <apex:pageBlock >
+    <apex:pageBlockSection title="Basic Information" columns="2" >
+   <apex:outputField value="{!book.name}" />
+   <apex:outputField value="{!con.name}" />
+      <apex:outputField value="{! Con.FirstName}" />
+            <apex:outputField value="{! Con.LAstName}" />
+            <apex:outputField value="{! Con.MobilePhone}" />
+        <apex:outputField value="{! Con.email}" >
+        <apex:actionSupport />
+        </apex:outputField>
+            <apex:outputField value="{! Con.Birthdate}" />
+    <apex:outputField value="{! Con.AccountId}" /> 
+    </apex:pageBlockSection>
+        </apex:pageBlock>
+     <apex:pageBlock >
+    <apex:pageBlockSection title="Schedule" columns="2" >
+        <apex:outputField value="{!book.Schedule__c}" />
+   <apex:outputField value="{!sch.No_of_days__c}" />
+   <apex:outputField value="{!sch.No_of_days__c}" />
+      <apex:outputField value="{!sch.Total_cost__c}" />
+      
+         
+    </apex:pageBlockSection>
+        </apex:pageBlock>
+	<h1>
+        Thank you for booking
+    </h1>
+</apex:page>

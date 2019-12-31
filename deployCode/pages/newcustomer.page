@@ -1,0 +1,174 @@
+<apex:page Controller="TourManage"  id="pg"  lightningStylesheets="true" >
+     <!--<lightningStylesheets="true">-->
+  <apex:form >
+  <apex:pageBlock >
+      <apex:outputLabel >
+          <apex:outputlabel styleClass="h1">
+        You have chosen {!Strtext}
+          </apex:outputlabel>
+      </apex:outputLabel>
+      <apex:outputlabel styleClass="h4">
+            for other packages view places page            
+            <apex:commandButton action="{!viewplaces}" value="view places"/>
+      </apex:outputlabel>   
+      
+            
+          
+  </apex:pageBlock>
+  </apex:form>    
+    <apex:form id="fm">
+    <apex:pageblock id="pb">
+        <apex:pageBlockSection title="Basic Information" columns="2" >
+            <apex:inputField value="{! Contact.FirstName}" />
+            <apex:inputField value="{! Contact.LAstName}" />
+            <apex:inputField value="{! Contact.MobilePhone}" />
+            <apex:inputField value="{! Contact.email}" />
+          <!--  <apex:inputField value="{! Contact.Birthdate}"  />  -->     
+            <apex:inputField value="{! Contact.MailingStreet}" />
+            <apex:inputField value="{! Contact.MailingCity}" />
+            <apex:inputField value="{! Contact.MailingState}" />
+                <!--><apex:inputField value="{! contact.MailingZip/PostalCode}" />               -->
+            <apex:inputField value="{! Contact.MailingCountry}" />
+            
+        </apex:pageBlockSection>
+    
+        <apex:pageBlockSection title="Tour specific Information ">
+              <apex:inputfield value="{!Contact.PassPort__c }"/> 
+              <apex:inputfield value="{!Contact.Languages__c}"/> 
+            <apex:inputfield value="{!Contact.Visa__c}"/> 
+        </apex:pageBlockSection>
+    
+        <apex:pageBlockSection title="Health Information " columns="2">
+            <apex:inputField value="{! Contact.Blood_Group__c} "/>
+            <apex:inputField value="{! Contact.diseases__c} " />
+             <apex:inputField value="{! Contact.Upload_prescription__c} " rendered="{!if(Contact.Diseases__c==null,true,false)}"   />
+            <!-- <apex:inputFile> value="{!contact.file}" </apex:inputFile> -->
+            
+        </apex:pageBlockSection>
+    
+        <apex:pageBlockSection title="Tour packages to be booked ">
+           
+                
+                
+                <apex:pageblock id="pb1">
+                    
+                    
+                        <apex:panelGrid columns="10">
+                           
+                            <apex:panelGrid >
+                                <apex:facet name="header" >From</apex:facet>
+                                <apex:inputfield id="From" value="{!schedule.From__c}" styleClass="dateformat" >  
+                                     
+                                </apex:inputfield>
+                            </apex:panelGrid>
+                            
+                            <apex:panelGrid >
+                                <apex:facet name="header">To</apex:facet>
+                                <apex:inputfield id="To" value="{!schedule.To__c}">
+                                   <apex:actionSupport event="onchange" action="{!DayCaculate}" reRender="days,cost,final"/>
+                                    <!--  <apex:actionSupport event="onchange" action="{!DayCaculate}" reRender="nights"/> -->
+                                </apex:inputfield>
+                            </apex:panelGrid>
+                            
+                             <apex:panelGrid title="SPD" >
+                                <apex:facet name="header">Package Name</apex:facet>
+                                 
+                                <apex:outputfield id="Tour" value="{!tour1.name}" >
+                                    
+                                    <apex:actionSupport event="onclick" action="{!fetchCostDetails}" reRender="cost,final"/>          
+                                </apex:outputfield>
+                                    
+                            </apex:panelGrid>
+                           
+                            
+                        <!--    <apex:panelGrid >
+                                <apex:facet name="header">NO Of Nights</apex:facet>
+                                <apex:outputField id="nights" value="{!schedule.Number_of_Nights__c}"/>
+                            </apex:panelGrid> -->
+                            <apex:panelGrid >
+                                <apex:facet name="header">NO Of Days</apex:facet>
+                                <apex:outputField id="days" value="{!schedule.No_of_days__c}" />                                    
+                                 
+                            </apex:panelGrid>  
+                           
+                        </apex:panelGrid>                                               
+                    
+                </apex:pageblock>		      
+        </apex:pageBlockSection>
+        </apex:pageblock>
+        <apex:pageblock >
+            
+              
+          <apex:outputlabel styleClass="h2">
+           Cost Details
+          </apex:outputlabel>
+            <br/>
+            <br/>
+            <apex:outputLabel Styleclass="tcost"><b>choose account</b></apex:outputLabel>
+            <apex:inputField value="{! Contact.AccountId}" > 
+                <apex:actionSupport event="onchange" action="{!OfferDetails}" reRender="OfferDet,final"/>
+            </apex:inputField>   
+            <br/>
+            <br/>
+        	<apex:outputLabel Styleclass="tcost"><b>Cost per day</b></apex:outputLabel>   
+            <apex:outputField value="{!tour1.Cost_per_day__c}"   />   
+            <br/>
+            <br/>
+            <apex:outputLabel Styleclass="tcost"><b>Total cost</b></apex:outputLabel>         
+            <apex:outputField value="{!schedule.Total_cost__c}" id="cost"  /> 
+            <br/>
+            <br/>
+            <apex:outputLabel Styleclass="tcost"><b>Discount</b></apex:outputLabel>
+            <apex:outputField value="{!off.Discount__c}" id="OfferDet"/>
+            <apex:actionSupport event="onchange" action="{!FinalCost}"   reRender="final"/>
+            <br/>
+            <br/>
+            <apex:outputLabel Styleclass="tcost"><b>Final Cost </b></apex:outputLabel>
+            <apex:outputField value="{!schedule.Total_cost__c}" id="final"  /> 
+            <br/>
+            <br/>
+            <apex:commandbutton value="SAVE" action="{!Save}" styleClass="savebutton"  />  
+				
+        </apex:pageblock>
+            
+        
+    </apex:form>
+    <style>
+ 
+.savebutton {
+	background-color: #008CBA !important;        
+      
+      margin-left:450px !important;
+      font-size: 200% !important;
+        border-radius: 4px !important;
+       color:white !important;
+     font-weight:300 !important;
+        width: 10% !important;
+
+    }
+        .h1{
+        margin-left:250px ;
+        font-size: 25px !important;
+        }
+         .h4{
+        margin-left:1050px ;
+        }
+		.h2{
+        margin-left:450px ;
+        font-size: 25px !important;
+        }        
+        .tcost{
+        margin-left:450px !important;
+        }
+        .calcost{
+         margin-left:20px !important;
+        }
+   
+.dateFormat{
+   visibility:hidden;
+}
+</style>
+        
+
+    
+</apex:page>
